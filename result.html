@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   
+    <script type="text/javascript" src="web3.min.js"></script>
+
+    <title>OneVote - Result</title>
+    <link rel="icon" href="img/icon.png">
+  </head>
+
+    <body>
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+
+          <br><br><br><br><br><br><br>
+          <p style="text-align: center"><img src="img/logo.png"></p><br>
+
+            <fieldset>
+              <legend>Enter provided Transaction Hash to check Results</legend>
+
+              <div class="row">
+
+              <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="Enter transaction hash" id="transaction_hash">
+              </div>
+
+            </div>
+
+            </fieldset><br>
+
+            <div class="row">
+
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-lg btn-block btn btn-success" onClick="loginResults()">Submit</button>
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+        <div class="col-md-3"></div>
+
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+  </body>
+</html>
+
+
+<script type="text/javascript">
+
+  const Web3 = require('web3');
+  var web3;
+  var web3Provider = null;
+  var public_address;
+
+  const connectWithWeb3 = async() => {
+
+    if (typeof web3 !== 'undefined') {
+      // If a web3 instance is already provided by Meta Mask.
+      web3Provider = web3.currentProvider;
+      web3 = new Web3(web3.currentProvider);
+      console.log("Metamask connected");
+    } else {
+      // Specify default instance if no web3 instance provided
+      web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      web3 = new Web3(web3Provider);
+      console.log("ganache connected");
+    }
+
+    getPublicAddress();
+
+  }
+
+
+  const getPublicAddress = async() => {
+
+        web3.eth.getCoinbase(function(err, account) {
+        if(err === null){
+          public_address = account.toUpperCase();;
+          console.log(account);
+        }
+        else{
+          console.log(err);
+        }
+      })
+  }
+
+
+  const loginResults = async() => {
+
+    var transaction_hash = document.getElementById("transaction_hash").value;
+
+    console.log(transaction_hash);
+    console.log(public_address);
+    
+    localStorage.setItem("transaction_hash", transaction_hash);
+    localStorage.setItem("public_address", public_address);
+    window.location.href = 'http://localhost/onevote/track.html';
+
+  }
+
+  window.onload = connectWithWeb3();
+
+</script>

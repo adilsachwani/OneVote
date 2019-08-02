@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>OneVote - Track Vote</title>
+    <link rel="icon" href="img/icon.png">
+  </head>
+
+    <body>
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        <div class="col-md-1"></div>
+        
+        <div class="col-md-10" id="results_div">
+
+          <h1 id="election_name" align="center" style="margin-top: 50px; margin-bottom: 50px" class="display-4"></h1>
+
+          <input type="text" class="form-control" style="margin-bottom: 10px" placeholder="Enter transaction_hash to track your casted vote" id="transaction_hash">
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block btn btn-success" style="margin-bottom: 50px" onClick="getVotes()">TRACK VOTE</button>
+
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <table class="table table-bordered table-dark" id="transaction_table"></table>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+
+
+        </div>
+
+        <div class="col-md-1"></div>
+
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+  </body>
+</html>
+
+
+<script type="text/javascript">
+
+  var transactionHash = localStorage.getItem("transaction_hash");
+  var publicAddress = localStorage.getItem("public_address");
+
+  console.log(transactionHash);
+  console.log(publicAddress);
+
+  const getElectionDetails = async() => {
+
+    let url = "http://localhost:3002/get_election_details/" + transactionHash + "/" + publicAddress;
+    const response = await fetch(url);
+    const myJson = await response.json();
+    console.log(myJson);
+    document.getElementById("election_name").innerHTML = myJson.election_details.election_name + " Results";
+
+    getResults();
+
+  }
+
+  const getResults = async() => {
+
+    let url = "http://localhost:3002/get_election_stats/"  + transactionHash + "/" + publicAddress;
+    const response = await fetch(url);
+    const myJson = await response.json();
+    let results = myJson.results;
+    console.log(myJson);
+
+    var div = document.getElementById('results_div');
+
+    for (var i=0; i<results.length; i++) {
+
+      //for post heading
+      var heading = document.createElement("h3");
+      heading.style.textAlign = "center";
+      var text = document.createTextNode(results[i].post_name);
+      heading.appendChild(text);
+      div.appendChild(heading);
+
+      //for table
+      var table = document.createElement("table");
+      table.classList.add("table");
+
+      //table head
+      var thead = document.createElement("thead");
+      thead.classList.add("thead-dark");
+      var tr = document.createElement("tr");
+      var th_name = document.createElement("th");
+      var th_vote_count = document.createElement("th");
+      var th_vote_per = document.createElement("th");
+      var texth_name = document.createTextNode("Candidate Name");
+      var texth_vote_count = document.createTextNode("Vote Count");
+      var texth_vote_per = document.createTextNode("Win Percentage");
+      th_name.appendChild(texth_name);
+      th_vote_count.appendChild(texth_vote_count);
+      th_vote_per.appendChild(texth_vote_per);
+      tr.appendChild(th_name);
+      tr.appendChild(th_vote_count);
+      tr.appendChild(th_vote_per);
+      thead.appendChild(tr);
+      table.appendChild(thead);
+
+      //table row
+      var tbody = document.createElement("tbody");
+
+      for(var j=0; j<results[i].candidates.length; j++){
+        
+        var tr = document.createElement("tr");
+        var td_name = document.createElement("td");
+        var td_vote_count = document.createElement("td");
+        var td_vote_per = document.createElement("td");
+        var text_name = document.createTextNode(results[i].candidates[j].candidate_name);
+        var text_vote_count = document.createTextNode(results[i].candidates[j].vote_count);
+        var text_vote_per = document.createTextNode(results[i].candidates[j].vote_percentage + "%");
+        td_name.appendChild(text_name);
+        td_vote_count.appendChild(text_vote_count);
+        td_vote_per.appendChild(text_vote_per);
+        tr.appendChild(td_name);
+        tr.appendChild(td_vote_count);
+        tr.appendChild(td_vote_per);
+        tbody.appendChild(tr);
+
+      }
+
+      table.appendChild(tbody);
+
+      div.appendChild(table);
+
+    }
+
+  }
+
+  const getVotes = async() => {
+
+    var hash = document.getElementById("transaction_hash").value;
+    let url = "http://localhost:3002/get_vote_details/" + hash;
+    const response = await fetch(url);
+    const myJson = await response.json();
+    console.log(myJson);
+    let results = myJson.votes;
+
+    var table = document.getElementById('transaction_table');
+    table.innerHTML = "";
+    var thead = document.createElement("thead");
+    thead.classList.add("thead-dark");
+    var tr = document.createElement("tr");
+    var th_post = document.createElement("th");
+    var th_candidate = document.createElement("th");
+    var texth_post = document.createTextNode("Post");
+    var texth_candidate = document.createTextNode("Candidate");
+    th_post.appendChild(texth_post);
+    th_candidate.appendChild(texth_candidate);
+    tr.appendChild(th_post);
+    tr.appendChild(th_candidate);
+    thead.appendChild(tr);
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+
+    for (var i=0; i<results.length; i++) {
+
+      var tr = document.createElement("tr");
+      var td_post = document.createElement("td");
+      var td_candidate = document.createElement("td");
+      var text_post = document.createTextNode(results[i].post);
+      var text_candidate = document.createTextNode(results[i].candidate);
+      td_post.appendChild(text_post);
+      td_candidate.appendChild(text_candidate);
+      tr.appendChild(td_post);
+      tr.appendChild(td_candidate);
+      tbody.appendChild(tr);
+
+    }
+
+    table.appendChild(tbody);
+
+  }
+
+  window.onload = getElectionDetails();
+
+</script>
