@@ -139,7 +139,7 @@ if(isset($_POST['next_button_posts'])){
     $_SESSION['election_id'] = $election_id;
     $_SESSION['total_posts'] = $total_posts;
     $_SESSION['total_voters'] = $total_voters;
-    echo "<script>window.location = 'http://localhost/onevote/posts.php'</script>";
+    echo "<script>window.location.href = 'posts.php'</script>";
   }
   else {
     echo "<script>alert('Error in adding basic details.')</script>";

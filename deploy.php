@@ -69,6 +69,8 @@ if(isset($_SESSION['election_id']) && isset($_SESSION['total_voters'])){
 
 <script>
 
+  const api_link = "http://localhost:3000/";
+
   const Web3 = require('web3');
   var web3;
   var web3Provider = null;
@@ -97,7 +99,7 @@ if(isset($_SESSION['election_id']) && isset($_SESSION['total_voters'])){
 
         web3.eth.getCoinbase(function(err, account) {
         if(err === null){
-          public_address = account.toUpperCase();;
+          public_address = account.toUpperCase();
           console.log(account);
         }
         else{
@@ -113,7 +115,7 @@ if(isset($_SESSION['election_id']) && isset($_SESSION['total_voters'])){
 
       var election_id = "<?php echo $election_id; ?>";
       
-      var url = "http://localhost:3002/deploy_contract/" + public_address + "/" + private_key;
+      var url = api_link + "deploy_contract/" + public_address + "/" + private_key;
 
       const response = await fetch(url);
       const myJson = await response.json();
@@ -121,14 +123,14 @@ if(isset($_SESSION['election_id']) && isset($_SESSION['total_voters'])){
       document.getElementById("congratulations").innerHTML = "Congratulations your Election is deployed!";
       document.getElementById("transaction").innerHTML = "<kbd>" + myJson.transaction_hash + "</kbd>"
 
-      url = "http://localhost:3002/send_election_transaction_mail/" + myJson.transaction_hash + "/" + election_id;
+      url = api_link + "send_election_transaction_mail/" + myJson.transaction_hash + "/" + election_id;
       response = await fetch(url);
   
   }
 
   const userActionCancel = async() => {
     
-    window.location = 'http://localhost/onevote/index.php';
+    window.location.href = 'index.php';
   
   }
 

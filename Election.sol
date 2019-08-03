@@ -4,11 +4,11 @@
     
     contract Election {
       
-      uint public election_id = 18;
-      string public election_name = "Marvel";
+      uint public election_id = 29;
+      string public election_name = "Animation Awards";
       string public election_date = "2019-12-31";
-      string public election_time = "12:59:00";
-      int public election_duration = 2;
+      string public election_time = "13:59:00";
+      int public election_duration = 3;
       uint public total_posts = 3;
       int public total_voters = 2;
 
@@ -86,6 +86,6 @@
 
       constructor() public {
 
-    addPost("Best Male");addCandidate(0,"Iron Man",0);addCandidate(1,"Thor",0);addCandidate(2,"Spiderman",0);addPost("Best Female");addCandidate(3,"Black Widow",1);addCandidate(4,"Scarlet Witch",1);addCandidate(5,"Gamora",1);addPost("Best Movie");addCandidate(6,"Endgame",2);addCandidate(7,"Civil War",2);addCandidate(8,"Thor Raganarok",2);addVoter("Adil Aslam","adilsachwani@gmail.com","0X6F49FAC2422D4F8A27BC799FF83CD8A77961A493");addVoter("Naveed Raza","naveedraza2907@gmail.com","0X0E19AF7E49B8AF629CDD8A51EB61248A677387AC");
+    addPost("Best Hindi Movie");addCandidate(0,"3 Bahadur",0);addCandidate(1,"Chotta Bheen",0);addCandidate(2,"Allahyar",0);addPost("Best English Movie");addCandidate(3,"Toy Story 3",1);addCandidate(4,"Rango",1);addCandidate(5,"Inside Out",1);addPost("Best Cartoon Series");addCandidate(6,"Ed Edd and Eddy",2);addCandidate(7,"Fosters Home",2);addCandidate(8,"Jonny Bravo",2);addVoter("Adil Aslam","adilsachwani@gmail.com","0X6F49FAC2422D4F8A27BC799FF83CD8A77961A493");addVoter("Naveed Raza","naveedraza2907@gmail.com","0X0E19AF7E49B8AF629CDD8A51EB61248A677387AC");
         }
       }

@@ -55,6 +55,7 @@
 
 <script type="text/javascript">
 
+  const api_link = "http://localhost:3000/";
   var transactionHash = localStorage.getItem("transaction_hash");
   var publicAddress = localStorage.getItem("public_address");
 
@@ -63,7 +64,7 @@
 
   const getElectionDetails = async() => {
 
-    let url = "http://localhost:3002/get_election_details/" + transactionHash + "/" + publicAddress;
+    let url = api_link + "get_election_details/" + transactionHash + "/" + publicAddress;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);
@@ -75,7 +76,7 @@
 
   const getResults = async() => {
 
-    let url = "http://localhost:3002/get_election_stats/"  + transactionHash + "/" + publicAddress;
+    let url = api_link + "get_election_stats/"  + transactionHash + "/" + publicAddress;
     const response = await fetch(url);
     const myJson = await response.json();
     let results = myJson.results;
@@ -148,7 +149,7 @@
   const getVotes = async() => {
 
     var hash = document.getElementById("transaction_hash").value;
-    let url = "http://localhost:3002/get_vote_details/" + hash;
+    let url = api_link + "get_vote_details/" + hash;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);

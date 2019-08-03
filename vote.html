@@ -67,6 +67,7 @@
 
 <script type="text/javascript">
 
+  const api_link = "http://localhost:3000/";
   const Web3 = require('web3');
   var web3;
   var web3Provider = null;
@@ -112,7 +113,7 @@
     console.log(transaction_hash);
     console.log(public_address);
     
-    let url = "http://localhost:3002/voter_login/"  + transaction_hash + "/" + public_address;
+    let url = api_link + "voter_login/"  + transaction_hash + "/" + public_address;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);
@@ -122,7 +123,7 @@
       localStorage.setItem("transaction_hash", transaction_hash);
       localStorage.setItem("public_address", public_address);
       localStorage.setItem("voter_id", myJson.voter_id);
-      window.location.href = 'http://localhost/onevote/cast.html';
+      window.location.href = 'cast.html';
     
     } else {
       

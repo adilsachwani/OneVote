@@ -67,6 +67,7 @@
 
 <script type="text/javascript">
 
+  const api_link = "http://localhost:3000/";
   const Web3 = require('web3');
   var web3;
   var web3Provider = null;
@@ -114,7 +115,7 @@
     
     localStorage.setItem("transaction_hash", transaction_hash);
     localStorage.setItem("public_address", public_address);
-    window.location.href = 'http://localhost/onevote/track.html';
+    window.location.href = 'track.html';
 
   }
 

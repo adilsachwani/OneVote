@@ -113,7 +113,7 @@ if(isset($_POST['next_button_voters'])){
   echo $error;
   
   if(mysqli_query($onevote_db, rtrim($candidates_query,','))){
-    echo "<script>window.location = 'http://localhost/onevote/voters.php'</script>";
+    echo "<script>window.location.href = 'voters.php'</script>";
   }
   else {
     echo "<script>alert('Error in adding candidates.')</script>";

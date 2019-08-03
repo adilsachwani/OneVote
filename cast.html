@@ -63,19 +63,21 @@
 
 <script>
 
+  const api_link = "http://localhost:3000/";
   var postId = 0;
   var electionName;
   var tHash = [];
   var voterId = localStorage.getItem("voter_id");
   var transactionHash = localStorage.getItem("transaction_hash");
   var publicAddress = localStorage.getItem("public_address");
-  var private_key = "08430C56D97E9D5F87C362CE53B3E1F512F40D83DB61AE28ECF8C7F63032F72D";
+  //var private_key = "08430C56D97E9D5F87C362CE53B3E1F512F40D83DB61AE28ECF8C7F63032F72D";
+  var private_key = "B414A8543FB7925CCEB5FACEE14CF1E49143B73FA3DECB605E9E3C6B3832DDC9";
   console.log(transactionHash);
   console.log(publicAddress);
 
   const checkPostAndRadio = async() => {
 
-    let url = "http://localhost:3002/get_all_posts/" + transactionHash + "/" + publicAddress;
+    let url = api_link + "get_all_posts/" + transactionHash + "/" + publicAddress;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);
@@ -91,7 +93,7 @@
         
         value = radios[i].value;  
 
-        let url1 = "http://localhost:3002/get_candidate_by_name/" + transactionHash + "/" +  publicAddress + "/" + value;
+        let url1 = api_link + "get_candidate_by_name/" + transactionHash + "/" +  publicAddress + "/" + value;
         const response1 = await fetch(url1);
         const myJson1 = await response1.json();
         console.log(myJson1);
@@ -99,7 +101,7 @@
 
         let post_id = postId - 1;
 
-        let url2 = "http://localhost:3002/cast_vote/" + transactionHash + "/" + publicAddress + "/" + private_key + "/" + candidateId + "/" + post_id + "/" + voterId;
+        let url2 = api_link + "cast_vote/" + transactionHash + "/" + publicAddress + "/" + private_key + "/" + candidateId + "/" + post_id + "/" + voterId;
         const response2 = await fetch(url2);
         const myJson2 = await response2.json();
         console.log(myJson2);
@@ -123,7 +125,7 @@
 
           sendTransactionMail();
           
-          window.location.href = 'http://localhost/onevote';
+          window.location.href = 'index.html';
           alert("Voted Casted. Thankyou!.")
          
          } else {
@@ -152,7 +154,7 @@
       "transaction_hash" : tHash
     }
 
-    let url = "http://localhost:3002/send_vote_transaction_mail"
+    let url = api_link + "send_vote_transaction_mail"
     
     const response = await fetch(url, {
       method: 'POST',
@@ -167,7 +169,7 @@
 
   const checkPosts = async () => {
 
-    let url = "http://localhost:3002/get_all_posts/" + transactionHash + "/" + publicAddress;
+    let url = api_link + "get_all_posts/" + transactionHash + "/" + publicAddress;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);
@@ -176,7 +178,7 @@
 
     if(postId == postsLength){
 
-      window.location.href = "http://localhost/onevote";
+      window.location.href = "index.html";
 
     } else {
 
@@ -191,7 +193,7 @@
     var element = document.getElementById("candidatesList");
     element.innerHTML = '';
 
-    let url = "http://localhost:3002/get_election_details/" + transactionHash + "/" + publicAddress;
+    let url = api_link + "get_election_details/" + transactionHash + "/" + publicAddress;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);
@@ -206,7 +208,7 @@
 
   const getPosts = async() => {
     
-    let url = "http://localhost:3002/get_all_posts/" + transactionHash + "/" + publicAddress;
+    let url = api_link + "get_all_posts/" + transactionHash + "/" + publicAddress;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);
@@ -219,7 +221,7 @@
 
   const getPostCandidates = async() => {
     
-    let url = "http://localhost:3002/get_post_candidates/" + transactionHash + "/" + publicAddress + "/" + postId;
+    let url = api_link + "get_post_candidates/" + transactionHash + "/" + publicAddress + "/" + postId;
     const response = await fetch(url);
     const myJson = await response.json();
     console.log(myJson);

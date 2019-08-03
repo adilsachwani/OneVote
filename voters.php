@@ -280,7 +280,7 @@ if(isset($_POST['next_button_tokens'])){
 
     $handler = fopen('Election.sol', 'w');
     fwrite($handler, $election_contract);
-    echo "<script>window.location = 'http://localhost/onevote/deploy.php'</script>";
+    echo "<script>window.location.href = 'deploy.php'</script>";
 
 
   } else {
